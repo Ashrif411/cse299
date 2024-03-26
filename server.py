@@ -12,8 +12,7 @@ def index():
 
 @app.route('/login')
 def login():
-    return redirect('https://accounts.google.com/o/oauth2/auth?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fcallback&client_id={}&scope=email&access_type=offline'.format(CLIENT_ID))
-
+    return redirect('https://accounts.google.com/o/oauth2/auth?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fcallback&client_id={}&scope=email%20profile&access_type=offline'.format(CLIENT_ID))
 
 import requests
 from google.auth.transport.requests import Request as GoogleAuthRequest
@@ -34,7 +33,13 @@ def callback():
 
     # Store user data in session or database
     session['user_email'] = id_info['email']
-    session['user_name'] = id_info.get('name', 'Unknown')
+    session['user_name'] = id_info.get('name', None) # Set it to None initially
+
+    # Fetch user's name from Google profile if not available in ID token
+    if session['user_name'] is None:
+        user_info_response = requests.get('https://www.googleapis.com/oauth2/v1/userinfo', params={'access_token': token_data['access_token']})
+        user_info = user_info_response.json()
+        session['user_name'] = user_info.get('name', 'Unknown')
 
     return redirect(url_for('input_page'))
 
@@ -43,7 +48,7 @@ def input_page():
     user_email = session.get('user_email')
     user_name = session.get('user_name', 'Unknown')
     if user_email:
-        return render_template('input.html', user_name=session.get('user_name'), user_email=session.get('user_email'))
+        return render_template('input.html', user_name=user_name, user_email=user_email)
     else:
         return redirect(url_for('index'))
 
