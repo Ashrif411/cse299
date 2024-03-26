@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <style>
@@ -42,6 +42,106 @@
     <p>Email: {{ user_email }}</p>
     <form action="/logout" method="post">
         <input type="submit" value="Logout">
+    </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            background-color: #001F3F; /* Dark navy blue background */
+            color: #ffffff; /* White text color */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 50px;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <script>
+        function validateForm() {
+            var studentSheetUrl = document.getElementById('studentSheetUrl').value.trim();
+            var questionsSheetUrl = document.getElementById('questionsSheetUrl').value.trim();
+            var deadlineDate = document.getElementById('deadlineDate').value.trim();
+            var pdfFile = document.getElementById('pdfFile').value.trim();
+
+            if (studentSheetUrl === '' || !isValidUrl(studentSheetUrl)) {
+                alert('Please enter a valid student sheet URL.');
+                return false;
+            }
+
+            if (questionsSheetUrl === '' || !isValidUrl(questionsSheetUrl)) {
+                alert('Please enter a valid questions sheet URL.');
+                return false;
+            }
+
+            if (deadlineDate === '') {
+                alert('Please select a deadline.');
+                return false;
+            }
+
+            if (pdfFile === '') {
+                alert('Please upload a PDF file.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function isValidUrl(url) {
+            // Basic URL validation, you may need to enhance it based on your requirements
+            var pattern = /^(http|https):\/\/[^ "]+$/;
+            return pattern.test(url);
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <p>Email: {{ user_email }}</p>
+    <form action="/logout" method="post" onsubmit="return validateForm()">
+        <label for="studentSheetUrl">Student Sheet URL:</label><br>
+        <input type="text" id="studentSheetUrl" name="studentSheetUrl"><br>
+        
+        <label for="questionsSheetUrl">Questions Sheet URL:</label><br>
+        <input type="text" id="questionsSheetUrl" name="questionsSheetUrl"><br>
+        
+        <div class="field">
+            <label class="label">Deadline</label>
+            <div class="control">
+                <input class="input" type="datetime-local" id="deadlineDate" name="deadlineDate">
+            </div>
+        </div>
+        
+        <label for="pdfFile">Upload PDF File:</label><br>
+        <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf"><br><br>
+
+        <input type="submit" value="Submit">
     </form>
 </body>
 </html>
