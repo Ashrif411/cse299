@@ -32,6 +32,13 @@
         input[type="submit"]:hover {
             background-color: #45a049; /* Darker green on hover */
         }
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin: 5px;
+            width: 300px;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,6 +47,15 @@
 <body>
     <h1>Welcome, {{ user_name }}</h1>
     <p>Email: {{ user_email }}</p>
+    <form action="/submit_data" method="post">
+        <label for="spreadsheet_link1">Students information Spreadsheet Link:</label><br>
+        <input type="text" id="spreadsheet_link1" name="spreadsheet_link1" required><br>
+        <label for="spreadsheet_link2">Questions Spreadsheet Link :</label><br>
+        <input type="text" id="spreadsheet_link2" name="spreadsheet_link2" required><br>
+        <label for="deadline">Deadline:</label><br>
+        <input type="text" id="deadline" name="deadline" placeholder="YYYY-MM-DD"><br>
+        <input type="submit" value="Submit">
+    </form>
     <form action="/logout" method="post">
         <input type="submit" value="Logout">
     </form>
