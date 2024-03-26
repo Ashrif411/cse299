@@ -52,34 +52,50 @@
             var pdfFile = document.getElementById("pdfFile").files[0];
 
             // Check if fields are non-empty
-            if (studentSheetUrl && questionSheetUrl && deadlineDate && pdfFile) {
-                // Log values to console
-                console.log("Student Sheet URL:", studentSheetUrl);
-                console.log("Question Sheet URL:", questionSheetUrl);
-                console.log("Deadline Date:", deadlineDate);
-                console.log("PDF File:", pdfFile);
-
-                // Send form data to Flask route
-                var formData = new FormData();
-                formData.append('studentSheetUrl', studentSheetUrl);
-                formData.append('questionSheetUrl', questionSheetUrl);
-                formData.append('deadlineDate', deadlineDate);
-                formData.append('pdfFile', pdfFile);
-
-                fetch('/continue', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.text())
-                .then(data => {
-                    alert(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            } else {
-                alert("Please fill in all fields.");
+            if (!studentSheetUrl.trim()) {
+                alert("Please enter a valid student sheet URL.");
+                return;
             }
+
+            if (!questionSheetUrl.trim()) {
+                alert("Please enter a valid question sheet URL.");
+                return;
+            }
+
+            if (!deadlineDate.trim()) {
+                alert("Please enter a valid deadline date.");
+                return;
+            }
+
+            if (!pdfFile) {
+                alert("Please upload a PDF file.");
+                return;
+            }
+
+            // Log values to console
+            console.log("Student Sheet URL:", studentSheetUrl);
+            console.log("Question Sheet URL:", questionSheetUrl);
+            console.log("Deadline Date:", deadlineDate);
+            console.log("PDF File:", pdfFile);
+
+            // Send form data to Flask route
+            var formData = new FormData();
+            formData.append('studentSheetUrl', studentSheetUrl);
+            formData.append('questionSheetUrl', questionSheetUrl);
+            formData.append('deadlineDate', deadlineDate);
+            formData.append('pdfFile', pdfFile);
+
+            fetch('/continue', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     </script>
 </body>
