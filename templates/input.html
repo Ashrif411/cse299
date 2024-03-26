@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <style>
@@ -35,13 +35,115 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+    <title>Input Page</title>
 </head>
 <body>
-    <h1>Welcome, {{ user_name }}</h1>
-    <p>Email: {{ user_email }}</p>
-    <form action="/logout" method="post">
-        <input type="submit" value="Logout">
+    <h1>Input Page</h1>
+    <form action="/input" method="post" enctype="multipart/form-data">
+        <label for="sheet_questions">Sheet Link for Questions:</label><br>
+        <input type="text" id="sheet_questions" name="sheet_questions"><br><br>
+        
+        <label for="sheet_students">Sheet Link for Student List:</label><br>
+        <input type="text" id="sheet_students" name="sheet_students"><br><br>
+        
+        <label for="date">Date (MM-DD-YYYY):</label><br>
+        <input type="text" id="date" name="date" pattern="\d{2}-\d{2}-\d{4}" placeholder="MM-DD-YYYY" required><br><br>
+        
+        <label for="time">Time (HH:MM AM/PM):</label><br>
+        <input type="text" id="time" name="time" pattern="^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$" placeholder="HH:MM AM/PM" required><br><br>
+        
+        <label for="file">Upload PDF File:</label><br>
+        <input type="file" id="file" name="file"><br><br>
+        
+        <input type="submit" value="Submit">
     </form>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <title>AAS</title>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="title">Welcome to Your Profile</h1>
+
+        <div class="field">
+            <label class="label">Student Sheet URL</label>
+            <div class="control">
+                <input class="input" type="text" id="studentSheetUrl" placeholder="Enter student sheet URL">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Question Sheet URL</label>
+            <div class="control">
+                <input class="input" type="text" id="questionSheetUrl" placeholder="Enter question sheet URL">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Deadline</label>
+            <div class="control">
+                <input class="input" type="datetime-local" id="deadlineDate">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Upload PDF File</label>
+            <div class="control">
+                <input class="input" type="file" id="pdfFile" accept=".pdf">
+            </div>
+        </div>
+
+        <button class="button is-primary" onclick="continueClicked()">Continue</button>
+    </div>
+
+    <script>
+        // Function to handle continue button click
+        function continueClicked() {
+            // Get values from input fields
+            var studentSheetUrl = document.getElementById("studentSheetUrl").value;
+            var questionSheetUrl = document.getElementById("questionSheetUrl").value;
+            var deadlineDate = document.getElementById("deadlineDate").value;
+            var pdfFile = document.getElementById("pdfFile").files[0];
+
+            // Check if fields are non-empty
+            if (studentSheetUrl && questionSheetUrl && deadlineDate && pdfFile) {
+                // Log values to console
+                console.log("Student Sheet URL:", studentSheetUrl);
+                console.log("Question Sheet URL:", questionSheetUrl);
+                console.log("Deadline Date:", deadlineDate);
+                console.log("PDF File:", pdfFile);
+
+                // Send form data to Flask route
+                var formData = new FormData();
+                formData.append('studentSheetUrl', studentSheetUrl);
+                formData.append('questionSheetUrl', questionSheetUrl);
+                formData.append('deadlineDate', deadlineDate);
+                formData.append('pdfFile', pdfFile);
+
+                fetch('/continue', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+    </script>
 </body>
 </html>
